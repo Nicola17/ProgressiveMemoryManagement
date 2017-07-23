@@ -1,0 +1,22 @@
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+if(APPLE)
+else(APPLE)
+    find_package(OpenMP REQUIRED)
+    if (OPENMP_FOUND)
+        message (STATUS "OpenMP found")
+        set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    endif()
+endif(APPLE)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+include_directories ("${CMAKE_SOURCE_DIR}/src/cpp")
+include_directories ("catch/include")
+file(GLOB SourceFiles *.cpp)
+add_executable (tdd ${SourceFiles} )
+target_link_libraries (tdd LINK_PUBLIC pmm)
+target_link_libraries (tdd LINK_PUBLIC roaring)
+set_target_properties(tdd PROPERTIES FOLDER "Applications/Prog Table/Test Driven Development")
